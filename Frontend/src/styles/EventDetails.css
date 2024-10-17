@@ -1,0 +1,150 @@
+.nft-details-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  background: linear-gradient(to right, #fda4af, #d8b4fe, #818cf8);
+  color: white;
+  padding: 20px;
+  border-radius: 8px 8px 0 0;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.content {
+  background-color: transparent;
+  padding: 24px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nft-image img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.nft-info {
+  flex: 1;
+}
+
+.creator,
+.owner {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.creator span,
+.owner span {
+  color: #ba20a6;
+  font-weight: bold;
+}
+
+.description {
+  margin-bottom: 16px;
+}
+
+.price-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.current-price,
+.highest-bid {
+  background-color: #f0f4f8;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.label {
+  display: block;
+  color: #666;
+  font-size: 14px;
+}
+
+.value {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ba20a6;
+}
+
+.buy-button,
+.bid-button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.buy-button {
+  background-color: #ba20a6;
+  color: white;
+}
+
+.bid-button {
+  background-color: #f0f4f8;
+  color: #ba20a6;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  color: #666;
+  font-size: 14px;
+}
+
+.stats span::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+.likes::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.views::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'%3E%3C/path%3E%3Ccircle cx='12' cy='12' r='3'%3E%3C/circle%3E%3C/svg%3E");
+}
+
+.related-nfts h2 {
+  margin-bottom: 16px;
+}
+
+.related-nfts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.related-nft-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.related-nft-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.related-nft-card h3,
+.related-nft-card p {
+  margin: 8px;
+}
