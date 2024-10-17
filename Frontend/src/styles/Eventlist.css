@@ -1,0 +1,66 @@
+/* Container for Concert List */
+.event-list-container {
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Heading Styles */
+.event-list-heading {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Individual Concert Card */
+.concert-card {
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.concert-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Concert Title */
+.concert-title {
+  color: #4CAF50;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+/* Details Text */
+.concert-details {
+  margin: 5px 0;
+  color: #555;
+  font-size: 1em;
+  line-height: 1.6;
+}
+
+/* Price Highlight */
+.price-highlight {
+  font-weight: bold;
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 768px) {
+  .event-list-container {
+    max-width: 95%;
+  }
+
+  .concert-title {
+    font-size: 1.2em;
+  }
+
+  .concert-details {
+    font-size: 0.9em;
+  }
+}

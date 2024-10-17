@@ -8,6 +8,7 @@ import Organiser from './components/Organiser.jsx';
 import RootLayout from './components/Layout.jsx';
 import User from "./components/User.jsx";
 import EventDetails from "./components/EventDetails.jsx";
+import Eventlist from './components/Eventlist.jsx';
 
 function App() {
   return (
@@ -23,8 +24,8 @@ function App() {
           } />
           <Route path="/create-event" element={<Organiser />} />
           <Route path="/sign-in" element={<RootLayout />}/>
-          {/* <Route path="/user" element={<User />}/> */}
-          {/* <Route path="/event-detail" element={<EventDetails />} /> */}
+          <Route path="/event-detail" element={<EventDetails />} />
+          <Route path='/event' element={<Eventlist/>} />
         </Routes>
       </div>
     </Router>
