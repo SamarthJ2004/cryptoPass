@@ -1,7 +1,9 @@
 "use client";
 import { useAccount } from "wagmi";
+import {useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
+  const navigate = useNavigate();
   const { isConnected } = useAccount();
 
   return (
@@ -22,12 +24,15 @@ export default function SignIn() {
         </div> 
         <br></br>
         {isConnected && (
+          <>
           <div className="grid bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
             <h3 className="text-sm font-semibold bg-gray-100 p-2 text-center">Network selection button</h3>
             <div className="flex justify-center items-center p-4">
               <w3m-network-button />
             </div>
           </div>
+          <button className="mt-10 bg-black font-bold text-white px-5 py-2 rounded-xl" onClick={()=>navigate("/")}>Go To Home</button>
+          </>
         )}
       </div>
     </main>

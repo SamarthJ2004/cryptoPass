@@ -14,6 +14,7 @@ function Navbar() {
       <div className="nav-right-button">
         <Link to="/create-event"><button >Create Event</button></Link>
         <Link to="/sign-in"><button>Connect Wallet</button></Link>
+        <Link to="/user"><button>Profile</button></Link>
       </div>
     </nav>
   );

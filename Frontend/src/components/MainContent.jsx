@@ -9,9 +9,11 @@ import jonitaGandhi from '../images/jonitaGandhi.jpeg';
 import mohitChauhan from '../images/mohitChauhan.jpeg';
 import monaliThakur from '../images/monaliThakur.jpg';
 import '../styles/MainContent.css';
-import concert from './SignIn.jsx';
+import {useNavigate } from 'react-router-dom';
+import Event from "./EventDetails.jsx";
 
 const MainContent = () => {
+  const navigate=useNavigate();
   return (
     <div className="main-content">
         
@@ -21,7 +23,7 @@ const MainContent = () => {
         image={kanikaKapoor}
         description="Join us for an unforgettable night of live music!"
         buttonText="Buy Ticket"
-        onButtonClick={() => window.open(concert)}
+        onButtonClick={() => navigate("/event-detail")}
       />
       <Card 
         className="cards"
@@ -29,7 +31,7 @@ const MainContent = () => {
         image={badshah}
         description="Join us for an unforgettable night of live music!"
         buttonText="Buy Ticket"
-        onButtonClick={() => window.open(concert)}
+        onButtonClick={() => navigate("/event-detail")}
       />
       <Card 
         className="cards"
@@ -37,7 +39,7 @@ const MainContent = () => {
         image={shreyaGhosal}
         description="Join us for an unforgettable night of live music!"
         buttonText="Buy Ticket"
-        onButtonClick={() => window.open(concert)}
+        onButtonClick={() => navigate("/event-detail")}
       />
       <Card 
         className="cards"
@@ -45,7 +47,7 @@ const MainContent = () => {
         image={sanam}
         description="Join us for an unforgettable night of live music!"
         buttonText="Buy Ticket"
-        onButtonClick={() => window.open(concert)}
+        onButtonClick={() => navigate("/event-detail")}
       />
       <Card 
         className="cards"
@@ -53,7 +55,7 @@ const MainContent = () => {
         image={arijitSingh}
         description="Join us for an unforgettable night of live music!"
         buttonText="Buy Ticket"
-        onButtonClick={() => window.open(concert)}
+        onButtonClick={() => navigate("/event-detail")}
       />
       <Card 
         className="cards"
@@ -61,7 +63,7 @@ const MainContent = () => {
         image={darshanRaval}
         description="Join us for an unforgettable night of live music!"
         buttonText="Buy Ticket"
-        onButtonClick={() => window.open(concert)}
+        onButtonClick={() => navigate("/event-detail")}
       />
       <Card 
         className="cards"
@@ -69,7 +71,7 @@ const MainContent = () => {
         image={mohitChauhan}
         description="Join us for an unforgettable night of live music!"
         buttonText="Buy Ticket"
-        onButtonClick={() => window.open(concert)}
+        onButtonClick={() => navigate("/event-detail")}
       />
       <Card 
         className="cards"
@@ -77,7 +79,7 @@ const MainContent = () => {
         image={jonitaGandhi}
         description="Join us for an unforgettable night of live music!"
         buttonText="Buy Ticket"
-        onButtonClick={() => window.open(concert)}
+        onButtonClick={() => navigate("/event-detail")}
       />
       <Card 
         className="cards"
@@ -85,7 +87,7 @@ const MainContent = () => {
         image={monaliThakur}
         description="Join us for an unforgettable night of live music!"
         buttonText="Buy Ticket"
-        onButtonClick={() => window.open(concert)}
+        onButtonClick={() => navigate("/event-detail")}
       />
     </div>
   );

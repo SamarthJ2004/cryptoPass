@@ -16,15 +16,15 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-            <Navbar />
+              <Navbar />
               <Background />
               <MainContent />
             </>
           } />
           <Route path="/create-event" element={<Organiser />} />
           <Route path="/sign-in" element={<RootLayout />}/>
-          {/* <Route path="/user" element={<User />}/> */}
-          {/* <Route path="/event-detail" element={<EventDetails />} /> */}
+          <Route path="/user" element={<User />}/>
+          <Route path="/event-detail" element={<EventDetails />} />
         </Routes>
       </div>
     </Router>
