@@ -1,5 +1,6 @@
+// EventList.js
 import React, { useState, useEffect } from 'react';
-import '../styles/Eventlist.css';
+import '../styles/EventList.css';
 
 const EventList = () => {
   const [concerts, setConcerts] = useState([]);
@@ -25,6 +26,13 @@ const EventList = () => {
           <p className="concert-details">Description: {concert.description}</p>
           <p className="concert-details price-highlight">Regular Price: ${concert.regularPrice} (Count: {concert.regularCount})</p>
           <p className="concert-details price-highlight">VIP Price: ${concert.vipPrice} (Count: {concert.vipCount})</p>
+          {concert.imageHash && (
+            <img
+              src={`https://gateway.pinata.cloud/ipfs/${concert.imageHash}`} // Render the image using the IPFS hash
+              alt={`${concert.concertName} poster`}
+              className="concert-image" // Add a class for styling if needed
+            />
+          )}
         </div>
       ))}
     </div>
