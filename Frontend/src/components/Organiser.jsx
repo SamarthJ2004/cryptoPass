@@ -126,7 +126,7 @@ const getCreateEvents = async (CryptoPassContract) => {
           <li><strong>Token IDs:</strong> {lastEvent.tokenIds.join(', ')}</li>
         </ul>
       ) : (
-        <p>No event created yet.</p>
+        <p>No events as of now.</p>
       )}
     </div>
   );
