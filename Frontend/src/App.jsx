@@ -71,7 +71,7 @@ function App() {
               <MainContent />
             </>
           } />
-          <Route path="/create-event" element={<Organiser />} />
+          <Route path="/create-event" element={<Organiser currentAccount={currentAccount}/>} />
           <Route path="/sign-in" element={<RootLayout />}/>
           <Route path="/user" element={<User />}/>
           <Route path="/event-detail" element={<EventDetails />} />
