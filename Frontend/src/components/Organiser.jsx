@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Navbar from "./Navbar";
+import {contract} from "../config";
 
 const ConcertRegistrationForm = () => {
   const [concertName, setConcertName] = useState('');
@@ -31,6 +33,8 @@ const ConcertRegistrationForm = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="container">
       <form onSubmit={handleSubmit} className="form">
         <h2 className="form-title">Concert Registration</h2>
@@ -150,6 +154,7 @@ const ConcertRegistrationForm = () => {
         <button type="submit" className="submit-btn">Submit</button>
       </form>
     </div>
+    </>
   );
 };
 

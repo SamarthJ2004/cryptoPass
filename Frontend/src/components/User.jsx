@@ -3,6 +3,7 @@ import satoru_gozo from '../images/satoru_gozo.jpg';
 import jonitaGandhi from '../images/jonitaGandhi.jpeg';
 import mohitChauhan from '../images/mohitChauhan.jpeg';
 import monaliThakur from '../images/monaliThakur.jpg';
+import Navbar from './Navbar';
 import '../styles/User.css';
 
 const projects = [
@@ -13,6 +14,8 @@ const projects = [
 
 const ProfilePage = () => {
   return (
+    <>
+    <Navbar/>
     <div className="profile-page">
       <div className="header"></div>
       <div className="content">
@@ -55,6 +58,7 @@ const ProfilePage = () => {
       </div>
       
     </div>
+    </>
   );
 };
 
