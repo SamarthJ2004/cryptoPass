@@ -1,4 +1,5 @@
 import '../styles/EventDetails.css';
+import Navbar from './Navbar';
 
 const EventDetailsPage = () => {
   const nft = {
@@ -18,6 +19,8 @@ const EventDetailsPage = () => {
   ];
 
   return (
+    <>
+    <Navbar/>
     <div className="nft-details-page">
       <div className="header">
         <h1>{nft.title}</h1>
@@ -61,6 +64,7 @@ const EventDetailsPage = () => {
       </div>
       
     </div>
+    </>
   );
 };
 

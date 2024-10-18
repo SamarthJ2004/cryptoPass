@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import Navbar from "./Navbar";
+import { contract } from '../config';
+import {ethers} from "ethers";
+import cryptoPass from "../TicketMarketplace.json";
 
-const ConcertRegistrationForm = () => {
+const ConcertRegistrationForm = (currentAccount) => {
   const [concertName, setConcertName] = useState('');
   const [artistName, setArtistName] = useState('');
   const [dateTime, setDateTime] = useState('');
@@ -12,9 +16,76 @@ const ConcertRegistrationForm = () => {
   const [contactEmail, setContactEmail] = useState('');
   const [category, setCategory] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
+  const [lastEvent, setLastEvent] = useState(null);
+
+  const addEvent = async () => {
+  try {
+    const { ethereum } = window;
+
+    if (ethereum) {
+      const provider = new ethers.providers.Web3Provider(ethereum);
+      const signer = provider.getSigner();
+      const CryptoPassContract = new ethers.Contract(
+        contract,
+        cryptoPass.abi,
+        signer
+      );
+
+      const eventDate = new Date(dateTime).getTime() / 1000;
+
+      const tx = await CryptoPassContract.createEvent(
+        artistName.substring(0, 3).toUpperCase(),
+        "R",
+        ticketsAvailable,
+        ticketPrice,
+        eventDate
+      );
+
+      console.log("Transaction sent, waiting for confirmation...");
+      const receipt = await tx.wait(); // Wait for the transaction to be mined
+
+      console.log("Transaction confirmed!");
+
+      // Wait for a few seconds to ensure the event has been indexed
+      setTimeout(async () => {
+        await getCreateEvents(CryptoPassContract);
+      }, 5000); // Wait for 5 seconds
+    } else {
+      console.log("Ethereum object doesn't exist");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+const getCreateEvents = async (CryptoPassContract) => {
+  const events = await CryptoPassContract.queryFilter("EventCreated");
+  
+  console.log("Past EventCreated events:");
+  events.forEach(event => {
+    const { eventId, bandId, eventNumber, maxTickets, ticketPrice, tokenIds } = event.args;
+    console.log("Event ID:", eventId.toString());
+    console.log("Band ID:", bandId);
+    console.log("Event Number:", eventNumber.toString());
+    console.log("Max Tickets:", maxTickets.toString());
+    console.log("Ticket Price:", ticketPrice.toString());
+    console.log("Token IDs:", tokenIds.map(id => id.toString()));
+  });
+
+  const {eventId, bandId, eventNumber, maxTickets, ticketPrice, tokenIds} = events[events.length-1].args;
+  setLastEvent({
+    eventId: eventId.toString(),
+    bandId,
+    eventNumber: eventNumber.toString(),
+    maxTickets: maxTickets.toString(),
+    ticketPrice: ticketPrice.toString(),
+    tokenIds: tokenIds.map(id => id.toString()),
+  });
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    addEvent();
     console.log({
       concertName,
       artistName,
@@ -28,9 +99,41 @@ const ConcertRegistrationForm = () => {
       category,
       additionalInfo,
     });
+
+    setConcertName('');
+    setArtistName('');
+    setDateTime('');
+    setVenue('');
+    setDescription('');
+    setTicketPrice('');
+    setTicketsAvailable('');
+    setPoster(null);
+    setContactEmail('');
+    setCategory('');
+    setAdditionalInfo('');
   };
 
+  const LastEventDetails = () => (
+    <div className="event-details">
+      <h3>Last Event Created</h3>
+      {lastEvent ? (
+        <ul>
+          <li><strong>Event ID:</strong> {lastEvent.eventId}</li>
+          <li><strong>Band ID:</strong> {lastEvent.bandId}</li>
+          <li><strong>Event Number:</strong> {lastEvent.eventNumber}</li>
+          <li><strong>Max Tickets:</strong> {lastEvent.maxTickets}</li>
+          <li><strong>Ticket Price:</strong> {lastEvent.ticketPrice}</li>
+          <li><strong>Token IDs:</strong> {lastEvent.tokenIds.join(', ')}</li>
+        </ul>
+      ) : (
+        <p>No events as of now.</p>
+      )}
+    </div>
+  );
+
   return (
+    <>
+    <Navbar/>
     <div className="container">
       <form onSubmit={handleSubmit} className="form">
         <h2 className="form-title">Concert Registration</h2>
@@ -149,7 +252,9 @@ const ConcertRegistrationForm = () => {
 
         <button type="submit" className="submit-btn">Submit</button>
       </form>
+      {lastEvent && <LastEventDetails />}
     </div>
+    </>
   );
 };
 
@@ -218,11 +323,35 @@ const styles = `
   .submit-btn:hover {
     background-color: #45a049;
   }
+    .event-details {
+    margin-top: 30px;
+    background-color: #2d2d2d;
+    padding: 15px;
+    border-radius: 4px;
+  }
+
+  .event-details h3 {
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  .event-details ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .event-details ul li {
+    margin-bottom: 8px;
+  }
+
+  .event-details ul li strong {
+    color: #ff6600;
+  }
 `;
 
-export default () => (
+export default ({currentAccount}) => (
   <>
     <style>{styles}</style>
-    <ConcertRegistrationForm />
+    <ConcertRegistrationForm currentAccount={currentAccount} />
   </>
 );
