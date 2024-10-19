@@ -1,7 +1,7 @@
 import '../styles/EventDetails.css';
 import Navbar from './Navbar';
 import {ethers} from "ethers";
-import cryptoPass from "../TicketMarketplace.json";
+import cryptoPass from "../new.json";
 import { contract } from '../config';
 
 const EventDetailsPage = () => {
@@ -15,7 +15,7 @@ const EventDetailsPage = () => {
           const signer = provider.getSigner();
           const CryptoPassContract = new ethers.Contract(
             contract,
-            cryptoPass.abi,
+            cryptoPass,
             signer
           );
 
@@ -30,14 +30,13 @@ const EventDetailsPage = () => {
           );
 
           console.log("Transaction sent, waiting for confirmation...");
-          const receipt = await tx.wait(); // Wait for the transaction to be mined
+          const receipt = await tx.wait();
 
           console.log("Transaction confirmed!");
 
-          // Wait for a few seconds to ensure the event has been indexed
           setTimeout(async () => {
             await getCreateEvents(CryptoPassContract);
-          }, 5000); // Wait for 5 seconds
+          }, 5000);
         } else {
           console.log("Ethereum object doesn't exist");
         }
