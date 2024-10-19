@@ -1,40 +1,74 @@
-const connectWallet = async () => {
-    try {
-      const { ethereum } = window;
+/**
+ * THIS IS EXAMPLE CODE THAT USES HARDCODED VALUES FOR CLARITY.
+ * THIS IS EXAMPLE CODE THAT USES UN-AUDITED CODE.
+ * DO NOT USE THIS CODE IN PRODUCTION.
+ */
+import {ethers} from "ethers";
+const provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/eth_sepolia")
+const aggregatorV3InterfaceABI = [
+  {
+    inputs: [],
+    name: "decimals",
+    outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "description",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint80", name: "_roundId", type: "uint80" }],
+    name: "getRoundData",
+    outputs: [
+      { internalType: "uint80", name: "roundId", type: "uint80" },
+      { internalType: "int256", name: "answer", type: "int256" },
+      { internalType: "uint256", name: "startedAt", type: "uint256" },
+      { internalType: "uint256", name: "updatedAt", type: "uint256" },
+      { internalType: "uint80", name: "answeredInRound", type: "uint80" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "latestRoundData",
+    outputs: [
+      { internalType: "uint80", name: "roundId", type: "uint80" },
+      { internalType: "int256", name: "answer", type: "int256" },
+      { internalType: "uint256", name: "startedAt", type: "uint256" },
+      { internalType: "uint256", name: "updatedAt", type: "uint256" },
+      { internalType: "uint80", name: "answeredInRound", type: "uint80" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "version",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+]
+// const addr = "0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43" //mainnet eth->usd
+const addr = "0x694AA1769357215DE4FAC081bf1f309aDC325306"  //sepolia sep->usd
 
-      if (!ethereum) {
-        console.log('Metamask not detected');
-        window.alert("Connect to Metamask");
-        window.location = "https://metamask.io/";
-        return;
-      }
+const priceFeed = new ethers.Contract(addr, aggregatorV3InterfaceABI, provider)
 
-      let chainId = await ethereum.request({ method: 'eth_chainId' });
-      console.log('Connected to chain:' + chainId);
-      const sepoliaChainId = SEPOLIA_ID;
+const getPrice = async()=>{
+  try {
+    const roundData = await priceFeed.latestRoundData();
+    const price = ethers.utils.formatUnits(roundData.answer, 8);
+    console.log("Latest Round Data: $", price);
+    return price;
+  } catch (error) {
+    console.error("Error fetching price data: ", error);
+    return null;
+  }
+}
 
-      if (chainId !== sepoliaChainId) {
-        alert('You are not connected to the Sepolia Testnet!');
-        return;
-      }
-
-      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-
-      console.log('Found account', accounts[0]);
-      setCurrentAccount(accounts[0]);
-    } catch (error) {
-      console.log('Error connecting to metamask', error);
-    }
-  };
-
-  const checkCorrectNetwork = async () => {
-    const { ethereum } = window;
-    if (!ethereum) return;
-
-    let chainId = await ethereum.request({ method: 'eth_chainId' });
-    console.log('Connected to chain:' + chainId);
-
-    const sepoliaChainId = SEPOLIA_ID;
-
-    setCorrectNetwork(chainId === sepoliaChainId);
-  };
+export default getPrice;

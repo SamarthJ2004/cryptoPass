@@ -4,7 +4,7 @@ import { contract } from '../config';
 import {ethers} from "ethers";
 import cryptoPass from "../TicketMarketplace.json";
 
-const ConcertRegistrationForm = (currentAccount) => {
+const ConcertRegistrationForm = ({currentAccount}) => {
   const [concertName, setConcertName] = useState('');
   const [artistName, setArtistName] = useState('');
   const [dateTime, setDateTime] = useState('');
@@ -42,14 +42,13 @@ const ConcertRegistrationForm = (currentAccount) => {
       );
 
       console.log("Transaction sent, waiting for confirmation...");
-      const receipt = await tx.wait(); // Wait for the transaction to be mined
+      const receipt = await tx.wait();
 
       console.log("Transaction confirmed!");
 
-      // Wait for a few seconds to ensure the event has been indexed
       setTimeout(async () => {
         await getCreateEvents(CryptoPassContract);
-      }, 5000); // Wait for 5 seconds
+      }, 5000);
     } else {
       console.log("Ethereum object doesn't exist");
     }
@@ -123,7 +122,7 @@ const getCreateEvents = async (CryptoPassContract) => {
           <li><strong>Event Number:</strong> {lastEvent.eventNumber}</li>
           <li><strong>Max Tickets:</strong> {lastEvent.maxTickets}</li>
           <li><strong>Ticket Price:</strong> {lastEvent.ticketPrice}</li>
-          <li><strong>Token IDs:</strong> {lastEvent.tokenIds.join(', ')}</li>
+          <li><strong>Token IDs:</strong> {lastEvent.tokenIds.join('\n ')}</li>
         </ul>
       ) : (
         <p>No events as of now.</p>
@@ -133,7 +132,7 @@ const getCreateEvents = async (CryptoPassContract) => {
 
   return (
     <>
-    <Navbar/>
+    <Navbar account={currentAccount}/>
     <div className="container">
       <form onSubmit={handleSubmit} className="form">
         <h2 className="form-title">Concert Registration</h2>
@@ -145,6 +144,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="concertName"
             value={concertName}
             onChange={(e) => setConcertName(e.target.value)}
+            required
           />
         </div>
 
@@ -155,6 +155,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="artistName"
             value={artistName}
             onChange={(e) => setArtistName(e.target.value)}
+            required
           />
         </div>
 
@@ -165,6 +166,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="dateTime"
             value={dateTime}
             onChange={(e) => setDateTime(e.target.value)}
+            required
           />
         </div>
 
@@ -175,6 +177,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="venue"
             value={venue}
             onChange={(e) => setVenue(e.target.value)}
+            required
           />
         </div>
 
@@ -194,6 +197,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="ticketPrice"
             value={ticketPrice}
             onChange={(e) => setTicketPrice(e.target.value)}
+            required
           />
         </div>
 
@@ -204,6 +208,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="ticketsAvailable"
             value={ticketsAvailable}
             onChange={(e) => setTicketsAvailable(e.target.value)}
+            required
           />
         </div>
 

@@ -5,10 +5,10 @@ import './styles/nft.css';
 import Background from './components/Background.jsx';
 import MainContent from './components/MainContent.jsx';
 import Organiser from './components/Organiser.jsx';
-import RootLayout from './components/Layout.jsx';
 import User from "./components/User.jsx";
 import EventDetails from "./components/EventDetails.jsx";
 import { SEPOLIA_ID } from './config';
+import RootLayout from './components/Layout.jsx';
 
 function App() {
   const [currentAccount, setCurrentAccount] = useState('');
@@ -66,14 +66,14 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-              <Navbar />
+              <Navbar account={currentAccount}/>
               <Background />
               <MainContent />
             </>
           } />
           <Route path="/create-event" element={<Organiser currentAccount={currentAccount}/>} />
-          <Route path="/sign-in" element={<RootLayout />}/>
           <Route path="/user" element={<User />}/>
+          <Route path="/sign-in" element={<RootLayout />}/>
           <Route path="/event-detail" element={<EventDetails />} />
         </Routes>
       </div>

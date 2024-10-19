@@ -1,7 +1,50 @@
 import '../styles/EventDetails.css';
 import Navbar from './Navbar';
+import {ethers} from "ethers";
+import cryptoPass from "../new.json";
+import { contract } from '../config';
 
 const EventDetailsPage = () => {
+
+  const buyTicket=async()=>{
+    try {
+        const { ethereum } = window;
+
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const CryptoPassContract = new ethers.Contract(
+            contract,
+            cryptoPass,
+            signer
+          );
+
+          const eventDate = new Date(dateTime).getTime() / 1000;
+
+          const tx = await CryptoPassContract.createEvent(
+            artistName.substring(0, 3).toUpperCase(),
+            "R",
+            ticketsAvailable,
+            ticketPrice,
+            eventDate
+          );
+
+          console.log("Transaction sent, waiting for confirmation...");
+          const receipt = await tx.wait();
+
+          console.log("Transaction confirmed!");
+
+          setTimeout(async () => {
+            await getCreateEvents(CryptoPassContract);
+          }, 5000);
+        } else {
+          console.log("Ethereum object doesn't exist");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+  }
+
   const nft = {
     title: "Sur with Sunidhi",
     creator: "EDMinUrCity",
@@ -44,7 +87,7 @@ const EventDetailsPage = () => {
                 <span className="value" style={{color:'#ba20a6'}}>{nft.highestBid}</span>
               </div>
             </div>
-            <button className="buy-button">Buy Now</button>
+            <button className="buy-button" onClick={buyTicket}>Buy Now</button>
             <button className="bid-button">Place Bid</button>
             
           </div>
