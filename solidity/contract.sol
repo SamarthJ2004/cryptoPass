@@ -4,8 +4,20 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
+import {AggregatorV3Interface} from "@chainlink/contracts@1.2.0/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 contract TicketMarketplace is ERC1155, ReentrancyGuard, IERC1155Receiver {
+    AggregatorV3Interface internal dataFeed;
+    address public immutable owner;
+
+    constructor() ERC1155("ipfs://<CID>/{id}.json"){
+        owner=msg.sender;
+        dataFeed = AggregatorV3Interface(
+            // 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419 : for mainnet
+            0x694AA1769357215DE4FAC081bf1f309aDC325306
+        );
+    }
+
     struct EventDetails {
         string bandId;
         uint256 eventNumber;
@@ -30,11 +42,12 @@ contract TicketMarketplace is ERC1155, ReentrancyGuard, IERC1155Receiver {
         bool used;
     }
 
-    event EventCreated(uint256 eventId, string bandId, uint256 eventNumber, uint256 maxTickets, uint256 ticketPrice);
+    event EventCreated(uint256 eventId, string bandId, uint256 eventNumber, uint256 maxTickets, uint256 ticketPrice,uint256[] tokenIds);
     event TicketListedForResale(uint256 tokenId, uint256 price, address seller);
     event TicketSold(uint256 tokenId, address buyer);
     event TicketValidated(uint256 tokenId, address validator);
     event TicketPurchased(uint256 tokenId, address buyer, uint256 price);
+    event TicketBought(uint256 tokenId, address buyer, uint256 price);
 
     mapping(string => uint256) public bandEventCounts;
     mapping(uint256 => EventDetails) public events;
@@ -48,9 +61,10 @@ contract TicketMarketplace is ERC1155, ReentrancyGuard, IERC1155Receiver {
 
     uint256 public totalEvents;
     uint256 public marketplaceFeePercent = 2;
-    address public immutable owner;
-    constructor() ERC1155("ipfs://<CID>/{id}.json") {
-        owner=msg.sender;
+
+    function getChainlinkDataFeedLatestAnswer() public view returns (int) {
+        (,int answer, , , ) = dataFeed.latestRoundData();
+        return answer;
     }
 
     function createEvent(
@@ -68,8 +82,8 @@ contract TicketMarketplace is ERC1155, ReentrancyGuard, IERC1155Receiver {
             newEventId, 
             ticketType, 
             maxTickets, 
-            ticketPrice, 
-            0, 
+            ticketPrice,
+            0,
             eventTimestamp
         );
         eventCreators[totalEvents] = msg.sender;
@@ -83,7 +97,7 @@ contract TicketMarketplace is ERC1155, ReentrancyGuard, IERC1155Receiver {
             tokenOwner[tokenId]=msg.sender;
         }
 
-        emit EventCreated(totalEvents, bandId, newEventId, maxTickets, ticketPrice);
+        emit EventCreated(totalEvents, bandId, newEventId, maxTickets, ticketPrice,_generateTokenIds(bandId, newEventId, ticketType, maxTickets));
     }
 
     function buyTicket(uint256 tokenId) public payable nonReentrant {
@@ -98,6 +112,8 @@ contract TicketMarketplace is ERC1155, ReentrancyGuard, IERC1155Receiver {
         payable(seller).transfer(msg.value);
         tokenOwner[tokenId] = msg.sender;
         buyCount[msg.sender]++;
+
+        emit TicketBought(tokenId, msg.sender, ticketPrice);
     }
 
     function resellTicket(uint256 tokenId, uint256 resalePrice) public nonReentrant {
@@ -200,5 +216,12 @@ contract TicketMarketplace is ERC1155, ReentrancyGuard, IERC1155Receiver {
             amounts[i] = 1;
         }
         return amounts;
+    }
+
+    function getEventCreator(uint256 eventId)view public returns(address){
+        return eventCreators[eventId];
+    }
+    function getTokenOwner(uint256 tokenId)view public returns(address){
+        return tokenOwner[tokenId];
     }
 }
