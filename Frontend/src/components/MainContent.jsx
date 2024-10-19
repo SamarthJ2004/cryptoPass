@@ -55,8 +55,13 @@ const MainContent = () => {
             <li><strong>Ticket Price:</strong> {ticketPrice.toString()}</li>
             <li><strong>Token IDs:</strong> {tokenIds.map(id => id.toString()).join(', ')}</li>
           </ul>
+          <button onClick={()=>buyTicket(tokenIds,ticketPrice)}>Buy Ticket</button>
       </div>
     )
+  }
+
+  const buyTicket=async(tokenIds)=>{
+    
   }
 
   return (

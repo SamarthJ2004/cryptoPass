@@ -91,3 +91,8 @@
 .event-details ul li strong {
   color: #ff6600;
 }
+
+.event-details button{
+  background-color: white;
+  padding: 10px;
+}
