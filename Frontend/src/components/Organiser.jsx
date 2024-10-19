@@ -145,6 +145,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="concertName"
             value={concertName}
             onChange={(e) => setConcertName(e.target.value)}
+            required
           />
         </div>
 
@@ -155,6 +156,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="artistName"
             value={artistName}
             onChange={(e) => setArtistName(e.target.value)}
+            required
           />
         </div>
 
@@ -165,6 +167,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="dateTime"
             value={dateTime}
             onChange={(e) => setDateTime(e.target.value)}
+            required
           />
         </div>
 
@@ -175,6 +178,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="venue"
             value={venue}
             onChange={(e) => setVenue(e.target.value)}
+            required
           />
         </div>
 
@@ -194,6 +198,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="ticketPrice"
             value={ticketPrice}
             onChange={(e) => setTicketPrice(e.target.value)}
+            required
           />
         </div>
 
@@ -204,6 +209,7 @@ const getCreateEvents = async (CryptoPassContract) => {
             id="ticketsAvailable"
             value={ticketsAvailable}
             onChange={(e) => setTicketsAvailable(e.target.value)}
+            required
           />
         </div>
 

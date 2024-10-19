@@ -1,23 +1,16 @@
-import Card from './Card.jsx';
 import { useState,useEffect } from 'react';
-import kanikaKapoor from '../images/KanikaKapoor.jpg';
-import shreyaGhosal from '../images/shreyaGhosal.jpg';
-import badshah from '../images/badshah.jpg';
-import sanam from '../images/Sanam.webp';
-import arijitSingh from '../images/arijitSingh.jpeg';
-import darshanRaval from '../images/darshanRaval.jpeg';
-import jonitaGandhi from '../images/jonitaGandhi.jpeg';
-import mohitChauhan from '../images/mohitChauhan.jpeg';
-import monaliThakur from '../images/monaliThakur.jpg';
 import '../styles/MainContent.css';
 import {useNavigate} from 'react-router-dom';
 import {ethers} from "ethers";
 import { contract } from '../config';
 import cryptoPass from "../TicketMarketplace.json";
+import getPrice from '../logic.js';
 
 const MainContent = () => {
   const navigate=useNavigate();
   const [events,setEvents]=useState(null);
+  const [price,setPrice]=useState(null);
+  const [isOriginalPrice, setIsOriginalPrice] = useState(true);
 
   const getCreateEvents = async()=>{
     try {
@@ -39,10 +32,23 @@ const MainContent = () => {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log("Getting events: ");
     getCreateEvents();
-  },[]);
+  }, []);
+
+  useEffect(() => {
+      const fetchPrice = async () => {
+        const currentPrice = await getPrice();
+        setPrice(currentPrice);
+      };
+
+      fetchPrice();
+
+      const interval = setInterval(fetchPrice, 5000);
+
+      return () => clearInterval(interval);
+    }, []);
 
   const renderEvents=({eventId,bandId,eventNumber,maxTickets,ticketPrice,tokenIds})=>{
     return(
@@ -52,10 +58,10 @@ const MainContent = () => {
             <li><strong>Band ID:</strong> {bandId}</li>
             <li><strong>Event Number:</strong> {eventNumber.toString()}</li>
             <li><strong>Max Tickets:</strong> {maxTickets.toString()}</li>
-            <li><strong>Ticket Price:</strong> {ticketPrice.toString()}</li>
-            <li><strong>Token IDs:</strong> {tokenIds.map(id => id.toString()).join(', ')}</li>
+            <li><strong>Ticket Price:</strong> {isOriginalPrice?ticketPrice.toString():(ticketPrice.toString()/price).toFixed(8)}{isOriginalPrice?" dollars":" ETH"} <button className="styled-button" onClick={()=>setIsOriginalPrice(!isOriginalPrice)}>Get Exc</button></li>
+            <li><strong>Token IDs:</strong> {tokenIds.map(id => id.toString()).join('\n ')}</li>
           </ul>
-          <button onClick={()=>buyTicket(tokenIds,ticketPrice)}>Buy Ticket</button>
+          <button className='styled-button' onClick={()=>buyTicket(tokenIds,ticketPrice)}>Buy Ticket</button>
       </div>
     )
   }
@@ -66,79 +72,12 @@ const MainContent = () => {
 
   return (
     <>
-    <div className="main-content">
-      <Card 
-        className="cards"
-        title="Concert Event"
-        image={kanikaKapoor}
-        description="Join us for an unforgettable night of live music!"
-        buttonText="Buy Ticket"
-        onButtonClick={() => navigate("/event-detail")}
-      />
-      <Card 
-        className="cards"
-        title="Concert Event"
-        image={badshah}
-        description="Join us for an unforgettable night of live music!"
-        buttonText="Buy Ticket"
-        onButtonClick={() => navigate("/event-detail")}
-      />
-      <Card 
-        className="cards"
-        title="Concert Event"
-        image={shreyaGhosal}
-        description="Join us for an unforgettable night of live music!"
-        buttonText="Buy Ticket"
-        onButtonClick={() => navigate("/event-detail")}
-      />
-      <Card 
-        className="cards"
-        title="Concert Event"
-        image={sanam}
-        description="Join us for an unforgettable night of live music!"
-        buttonText="Buy Ticket"
-        onButtonClick={() => navigate("/event-detail")}
-      />
-      <Card 
-        className="cards"
-        title="Concert Event"
-        image={arijitSingh}
-        description="Join us for an unforgettable night of live music!"
-        buttonText="Buy Ticket"
-        onButtonClick={() => navigate("/event-detail")}
-      />
-      <Card 
-        className="cards"
-        title="Concert Event"
-        image={darshanRaval}
-        description="Join us for an unforgettable night of live music!"
-        buttonText="Buy Ticket"
-        onButtonClick={() => navigate("/event-detail")}
-      />
-      <Card 
-        className="cards"
-        title="Concert Event"
-        image={mohitChauhan}
-        description="Join us for an unforgettable night of live music!"
-        buttonText="Buy Ticket"
-        onButtonClick={() => navigate("/event-detail")}
-      />
-      <Card 
-        className="cards"
-        title="Concert Event"
-        image={jonitaGandhi}
-        description="Join us for an unforgettable night of live music!"
-        buttonText="Buy Ticket"
-        onButtonClick={() => navigate("/event-detail")}
-      />
-      <Card 
-        className="cards"
-        title="Concert Event"
-        image={monaliThakur}
-        description="Join us for an unforgettable night of live music!"
-        buttonText="Buy Ticket"
-        onButtonClick={() => navigate("/event-detail")}
-      />
+
+    <div className="converter-container" style={{ padding: "20px", textAlign: "center" }}>
+      <h1>ETH to USD Converter</h1>
+      <div>
+        <h2>ETH/USD Price: {price ? `$${price}` : "Loading..."}</h2>
+      </div>
     </div>
     
     {events && events.map((eve) => renderEvents(eve.args))}

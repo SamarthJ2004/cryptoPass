@@ -65,7 +65,7 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-              <Navbar />
+              <Navbar account={currentAccount}/>
               <Background />
               <MainContent />
             </>
